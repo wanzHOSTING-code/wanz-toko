@@ -1,14 +1,9 @@
 /* ============================================================
    Rona Market — stylesheet
-   Gabungan dari semua blok <style> pada rona-market-v5.3.html
    ============================================================ */
 
-/* ---------- Base (v5.1 core) ---------- */
-:root{
-  --blue:#2878f0;--blue-dark:#155fc8;--orange:#ff914d;--ink:#202938;
-  --muted:#7b8493;--bg:#f6f8fc;--line:#e9edf3;--white:#fff;
-  --green:#20a66a;--red:#e45c5c;
-}
+/* ---------- Base ---------- */
+:root{--blue:#2878f0;--blue-dark:#155fc8;--orange:#ff914d;--ink:#202938;--muted:#7b8493;--bg:#f6f8fc;--line:#e9edf3;--white:#fff;--green:#20a66a;--red:#e45c5c}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink)}
 button,input,textarea,select{font:inherit}
@@ -132,7 +127,7 @@ footer{margin-top:55px;background:white;border-top:1px solid var(--line);padding
 #featureModal{z-index:65}
 #featureModal .modal{max-height:88vh}
 
-/* ---------- v5.2 performance / interaction polish ---------- */
+/* ---------- Performance / interaction ---------- */
 html{scroll-behavior:smooth}
 body{overscroll-behavior-y:contain;-webkit-tap-highlight-color:transparent}
 button,.btn,.nav-page,.filter,.close{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -148,7 +143,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .modal-wrap.show,.drawer.show{pointer-events:auto}
 #productFormModal{z-index:75}
 
-/* ---------- v5.3 admin login / mobile dashboard fixes ---------- */
+/* ---------- Admin login ---------- */
 .admin-login-clean{max-width:390px;margin:34px auto 42px;text-align:center;padding:10px 8px}
 .admin-login-clean .admin-login-mark{width:54px;height:54px;border-radius:17px;background:#edf5ff;color:var(--blue);display:grid;place-items:center;margin:0 auto 15px;font-size:21px}
 .admin-login-clean h2{font-size:21px;letter-spacing:-.5px;margin:0}
@@ -162,8 +157,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 #adminModal.page-mode .admin-tabs{display:flex;flex-wrap:wrap;gap:7px;position:sticky;top:48px;z-index:8;background:#fff;padding:8px 0}
 #adminModal.page-mode #adminView{padding-bottom:32px}
 #adminModal.page-mode #salesChart{display:block;max-width:100%;height:auto;min-height:150px}
+@media(max-width:760px){
+ #adminModal.page-mode{padding:10px 9px 30px}
+ #adminModal.page-mode>.modal{padding:16px 13px;width:100%!important}
+ #adminModal.page-mode .modal-head{top:0}
+ #adminModal.page-mode .admin-tabs{top:45px}
+ #adminModal.page-mode .admin-tabs button{font-size:10px;padding:8px 9px}
+ #adminModal.page-mode .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #adminModal.page-mode .stat{min-width:0}
+ #adminModal.page-mode .table-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
 
-/* ---------- v5.1 separated pages & tracking ---------- */
+/* ---------- Nav pages + tracking ---------- */
 .nav-pages{gap:7px;margin-left:auto}
 .nav-page{position:relative;display:flex;align-items:center;gap:7px;border:0;background:transparent;color:#5f6b7b;padding:10px 11px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
 .nav-page i{font-size:14px}
@@ -221,9 +226,7 @@ body[data-page="cart"] main,body[data-page="cart"] footer,
 body[data-page="checkout"] main,body[data-page="checkout"] footer,
 body[data-page="admin"] main,body[data-page="admin"] footer{display:none}
 #cartDrawer.page-view{right:0;top:0;width:100%;max-width:none;height:calc(100vh - 70px);z-index:35;padding:26px max(22px,calc((100vw - 900px)/2));border-radius:0;box-shadow:none}
-#cartDrawer.page-view .drawer-head,
-#cartDrawer.page-view .cart-list,
-#cartDrawer.page-view .drawer-foot{width:100%;max-width:900px;margin-left:auto;margin-right:auto}
+#cartDrawer.page-view .drawer-head,#cartDrawer.page-view .cart-list,#cartDrawer.page-view .drawer-foot{width:100%;max-width:900px;margin-left:auto;margin-right:auto}
 #cartDrawer.page-view .cart-list{min-height:160px}
 #cartDrawer.page-view .cart-row{padding:12px;border:1px solid var(--line);border-radius:12px}
 #cartDrawer.page-view .drawer-foot{padding-top:20px}
@@ -233,75 +236,64 @@ body[data-page="admin"] main,body[data-page="admin"] footer{display:none}
 .modal-wrap.page-mode .modal-head{position:sticky;top:-25px;background:#fff;padding:8px 0 16px;z-index:2}
 body[data-page="shop"] #trackingPage{display:none}
 body[data-page="shop"] #cartDrawer.page-view{display:none}
+@media(max-width:760px){
+ .nav-wrap{gap:7px}.nav-pages{gap:2px}.nav-page{padding:9px 7px;font-size:10px;gap:5px}
+ .nav-page span{display:none}.nav-page.nav-icon span{display:none}.nav-page i{font-size:16px}
+ .nav-page.nav-icon .count{right:-1px;top:0}
+ .tracking-layout{grid-template-columns:1fr}.tracking-side{display:none}
+ .page-heading h1{font-size:28px}.tracking-card{padding:19px}.tracking-order-card{padding:16px}
+ .tracking-timeline{gap:2px}.tracking-stage{font-size:9px}
+ .tracking-meta{grid-template-columns:1fr 1fr}
+}
+@media(min-width:761px){.nav-page span{display:inline}}
+
+/* ---------- v5.4 FAQ + policy content ---------- */
+.faq-item{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;background:#fff}
+.faq-q{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer;font-size:12px;font-weight:700;color:var(--ink);background:none;border:0;width:100%;text-align:left}
+.faq-q:hover{background:#f8fafd}
+.faq-q i{transition:transform .2s;color:var(--blue);font-size:11px}
+.faq-item.open .faq-q i{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:12px;color:#526071;line-height:1.7;padding:0 15px}
+.faq-item.open .faq-a{max-height:400px;padding:0 15px 13px}
+.policy-content h2{font-size:17px;margin:0 0 4px}
+.policy-content .policy-date{font-size:10px;color:var(--muted);margin-bottom:18px}
+.policy-content h3{font-size:13px;margin:18px 0 7px;color:var(--blue)}
+.policy-content p,.policy-content li{font-size:12px;line-height:1.8;color:#4d5a6c;margin-bottom:6px}
+.policy-content ul{padding-left:18px}
+.policy-content .placeholder-box{background:#fff7e8;border:1px dashed #ffd58a;color:#8a6412;padding:10px 12px;border-radius:8px;font-size:11px;margin:10px 0;line-height:1.6}
 
 /* ---------- Responsive ---------- */
 @media(max-width:850px){
   .products{grid-template-columns:repeat(3,1fr)}
-  .hero h1{font-size:31px}
-  .hero img{width:230px}
-}
-@media(max-width:760px){
-  .nav-wrap{gap:7px}
-  .nav-pages{gap:2px}
-  .nav-page{padding:9px 7px;font-size:10px;gap:5px}
-  .nav-page span{display:none}
-  .nav-page.nav-icon span{display:none}
-  .nav-page i{font-size:16px}
-  .nav-page.nav-icon .count{right:-1px;top:0}
-  .tracking-layout{grid-template-columns:1fr}
-  .tracking-side{display:none}
-  .page-heading h1{font-size:28px}
-  .tracking-card{padding:19px}
-  .tracking-order-card{padding:16px}
-  .tracking-timeline{gap:2px}
-  .tracking-stage{font-size:9px}
-  .tracking-meta{grid-template-columns:1fr 1fr}
-  #adminModal.page-mode{padding:10px 9px 30px}
-  #adminModal.page-mode>.modal{padding:16px 13px;width:100%!important}
-  #adminModal.page-mode .modal-head{top:0}
-  #adminModal.page-mode .admin-tabs{top:45px}
-  #adminModal.page-mode .admin-tabs button{font-size:10px;padding:8px 9px}
-  #adminModal.page-mode .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #adminModal.page-mode .stat{min-width:0}
-  #adminModal.page-mode .table-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .hero h1{font-size:31px}.hero img{width:230px}
 }
 @media(max-width:600px){
   .nav-wrap{padding:12px 15px;gap:12px;flex-wrap:wrap}
   .logo{font-size:22px}
   .search{order:3;max-width:none;flex-basis:100%;height:39px}
-  .nav-actions{gap:13px}
-  .admin-link{font-size:11px}
+  .nav-actions{gap:13px}.admin-link{font-size:11px}
   .container{padding:16px}
   .hero{min-height:245px;padding:25px 20px}
-  .hero h1{font-size:26px}
-  .hero p{font-size:11px;max-width:220px}
+  .hero h1{font-size:26px}.hero p{font-size:11px;max-width:220px}
   .hero img{position:absolute;right:-48px;bottom:0;width:175px;height:160px;opacity:.8}
   .hero-copy{max-width:78%}
   .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .product-photo{height:145px}
-  .product-info{padding:10px}
-  .product-name{font-size:12px}
-  .price{font-size:13px}
+  .product-photo{height:145px}.product-info{padding:10px}
+  .product-name{font-size:12px}.price{font-size:13px}
   .section-head h2{font-size:18px}
-  .detail-layout{grid-template-columns:1fr}
-  .detail-layout img{height:210px}
+  .detail-layout{grid-template-columns:1fr}.detail-layout img{height:210px}
   .form-grid{grid-template-columns:1fr}
-  .admin-table{min-width:540px}
-  .table-scroll{overflow:auto}
+  .admin-table{min-width:540px}.table-scroll{overflow:auto}
   .catalog-tools{width:100%;justify-content:space-between}
   .catalog-tools select{flex:1;min-width:0}
   .section-head{align-items:flex-start;flex-direction:column}
   .hero{box-shadow:none}
-  .catalog-tools{width:100%}
   .admin-toolbar input{min-width:130px}
   .product:hover{transform:none;box-shadow:none}
   .modal-wrap{padding:10px}
   .modal-wrap.page-mode{padding:12px 10px 28px}
   .modal-wrap.page-mode>.modal{padding:17px}
   .drawer{padding:16px}
-}
-@media(min-width:761px){
-  .nav-page span{display:inline}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
