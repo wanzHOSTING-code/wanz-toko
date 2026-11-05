@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2878f0">
+<title>Rona Market v5.1 — Belanja Lebih Mudah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar" id="announcement">✨ Pilihan menarik setiap hari · Belanja nyaman di Rona Market</div>
+
+<header class="navbar">
+  <div class="nav-wrap">
+    <div class="logo" id="brandLogo">rona<span>.</span></div>
+    <div class="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="searchInput" placeholder="Cari produk..." autocomplete="off">
+    </div>
+    <div class="nav-actions nav-pages">
+      <button class="nav-page active" data-nav="shop" onclick="navigatePage('shop')"><i class="fa-solid fa-store"></i><span>Belanja</span></button>
+      <button class="nav-page" data-nav="track" onclick="navigatePage('track')"><i class="fa-solid fa-truck-fast"></i><span>Lacak</span></button>
+      <button class="nav-page nav-icon" data-nav="cart" onclick="openCart()" aria-label="Keranjang"><i class="fa-solid fa-bag-shopping"></i><span>Keranjang</span><b class="count" id="cartCount">0</b></button>
+      <button class="nav-page nav-icon" onclick="openNotifications()" aria-label="Notifikasi"><i class="fa-regular fa-bell"></i><span>Notifikasi</span><b class="count" id="noticeCount">0</b></button>
+      <button class="nav-page" data-nav="admin" onclick="openAdmin()"><i class="fa-solid fa-gauge-high"></i><span>Admin</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" id="heroSection">
+    <div class="hero-copy">
+      <span class="tag">PILIHAN MINGGU INI</span>
+      <h1 id="heroTitle">Temukan yang kamu suka, <span>harga bersahabat.</span></h1>
+      <p id="heroDescription">Produk pilihan untuk menemani aktivitasmu. Cari, pilih, dan pesan dengan lebih mudah.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="document.getElementById('productSection').scrollIntoView({behavior:'smooth'})">Mulai Belanja <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn btn-light" onclick="orderLookupUI('track')">Lacak Pesanan</button>
+      </div>
+    </div>
+    <img id="heroImage" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" alt="Produk pilihan">
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>Kategori pilihan</h2>
+        <p>Pilih jenis produk yang kamu cari</p>
+      </div>
+    </div>
+    <div class="filters" id="categoryFilters">
+      <button class="filter active" onclick="setCategory('all',this)">Semua</button>
+      <button class="filter" onclick="setCategory('fisik',this)">Produk fisik</button>
+      <button class="filter" onclick="setCategory('digital',this)">Produk digital</button>
+    </div>
+    <div class="filters" id="typeFilters">
+      <button class="filter active" onclick="setSubCategory('all',this)">Semua kategori</button>
+      <button class="filter" onclick="setSubCategory('fashion',this)">Fashion</button>
+      <button class="filter" onclick="setSubCategory('elektronik',this)">Elektronik</button>
+      <button class="filter" onclick="setSubCategory('aksesoris',this)">Aksesoris</button>
+      <button class="filter" onclick="setSubCategory('voucher',this)">Voucher & Top Up</button>
+      <button class="filter" onclick="setSubCategory('akun',this)">Lisensi & Akun</button>
+      <button class="filter" onclick="setSubCategory('lainnya',this)">Lainnya</button>
+    </div>
+  </section>
+
+  <section class="section" id="productSection">
+    <div class="section-head">
+      <div>
+        <h2>Produk pilihan</h2>
+        <p id="productSubtitle">Pilihan menarik untukmu</p>
+      </div>
+      <div class="catalog-tools">
+        <button class="filter" id="favoritesToggle" onclick="toggleFavorites()">♡ Favorit <span id="favoriteCount">0</span></button>
+        <select id="sortSelect" aria-label="Urutkan produk">
+          <option value="default">Urutkan: Rekomendasi</option>
+          <option value="low">Harga terendah</option>
+          <option value="high">Harga tertinggi</option>
+          <option value="name">Nama A–Z</option>
+          <option value="stock">Stok tersedia</option>
+        </select>
+      </div>
+    </div>
+    <div class="products" id="productList"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <div class="logo" id="footerLogo">rona<span>.</span></div>
+      <p id="footerTagline">Belanja nyaman, pilihan lebih menyenangkan.</p>
+    </div>
+    <div>
+      <strong>Informasi</strong>
+      <p>Tentang kami</p>
+      <p>Hubungi kami</p>
+      <p>Kebijakan privasi</p>
+    </div>
+    <div>
+      <strong>Temukan kami</strong>
+      <p><i class="fa-brands fa-instagram"></i> Instagram</p>
+      <p><i class="fa-brands fa-tiktok"></i> TikTok</p>
+    </div>
+  </div>
+  <div class="copyright">© 2026 <span id="copyrightName">Rona Market</span>. All rights reserved.</div>
+</footer>
+
+<section id="trackingPage" class="container app-page" hidden>
+  <div class="page-heading">
+    <button class="back-link" onclick="navigatePage('shop')"><i class="fa-solid fa-arrow-left"></i> Kembali belanja</button>
+    <span class="page-kicker">PUSAT PESANAN</span>
+    <h1>Lacak pesanan</h1>
+    <p>Pantau status pesanan Rona Market dengan nomor pesanan dan WhatsApp yang digunakan saat checkout.</p>
+  </div>
+  <div class="tracking-layout">
+    <div class="tracking-card">
+      <div class="tracking-card-title">
+        <span class="tracking-icon"><i class="fa-solid fa-box-open"></i></span>
+        <div>
+          <h2>Cek status pesanan</h2>
+          <p>Masukkan data pesananmu di bawah ini</p>
+        </div>
+      </div>
+      <form id="trackingPageForm">
+        <div class="field">
+          <label>Nomor pesanan</label>
+          <input name="orderId" required placeholder="Contoh: RN12345678" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Nomor WhatsApp saat checkout</label>
+          <input name="phone" required inputmode="tel" placeholder="08xxxxxxxxxx" autocomplete="tel">
+        </div>
+        <button class="btn btn-primary tracking-submit"><i class="fa-solid fa-magnifying-glass"></i> Lacak pesanan</button>
+      </form>
+      <div class="tracking-help"><i class="fa-solid fa-circle-info"></i> Nomor pesanan bisa ditemukan pada pesan konfirmasi yang dibuat setelah checkout.</div>
+    </div>
+    <div class="tracking-side">
+      <div class="tracking-side-icon"><i class="fa-solid fa-truck-fast"></i></div>
+      <h3>Pesananmu, terpantau</h3>
+      <p>Periksa perkembangan pesanan, informasi pengiriman, dan detail produk dalam satu halaman.</p>
+      <div class="tracking-steps-mini">
+        <span><i class="fa-solid fa-receipt"></i> Pesanan dibuat</span>
+        <span><i class="fa-solid fa-clipboard-check"></i> Diproses admin</span>
+        <span><i class="fa-solid fa-house-circle-check"></i> Pesanan selesai</span>
+      </div>
+    </div>
+  </div>
+  <div id="trackingPageResult" class="tracking-result" aria-live="polite"></div>
+</section>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3><i class="fa-solid fa-bag-shopping"></i> Keranjang</h3>
+    <button class="close" type="button" aria-label="Tutup keranjang" onclick="closeCart(event)">×</button>
+  </div>
+  <div class="cart-list" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Total belanja</span><span id="cartTotal">Rp0</span></div>
+    <button class="btn btn-primary" onclick="openCheckout()">Lanjut Checkout <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</aside>
+
+<div class="modal-wrap" id="detailModal" onclick="if(event.target===this)closeModal('detailModal')">
+  <div class="modal" id="detailContent"></div>
+</div>
+
+<div class="modal-wrap" id="checkoutModal" onclick="if(event.target===this)closeModal('checkoutModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="checkoutHeading">Data pemesanan</h3>
+      <button class="close" onclick="closeModal('checkoutModal')">×</button>
+    </div>
+    <form id="checkoutForm">
+      <div class="field">
+        <label>Nama lengkap</label>
+        <input name="customer" required maxlength="70" placeholder="Nama pemesan">
+      </div>
+      <div class="field">
+        <label>Nomor WhatsApp aktif</label>
+        <input name="phone" required inputmode="tel" placeholder="08xxxxxxxxxx">
+      </div>
+      <div id="physicalFields">
+        <div class="field">
+          <label>Alamat pengiriman lengkap</label>
+          <textarea name="address" maxlength="400" placeholder="Jalan, nomor rumah, RT/RW, kelurahan, kecamatan, kota"></textarea>
+        </div>
+        <div class="field">
+          <label>Pilihan kurir</label>
+          <select name="courier">
+            <option>Konfirmasi dengan admin</option>
+            <option>JNE</option>
+            <option>J&T</option>
+            <option>SiCepat</option>
+            <option>Pos Indonesia</option>
+            <option>Pos / kurir lokal</option>
+          </select>
+        </div>
+      </div>
+      <div id="digitalFields" hidden>
+        <div class="notice">Produk digital tidak dikirim ke alamat rumah. Isi kontak atau ID akun sesuai kebutuhan produk. Admin akan mengonfirmasi detail dan proses pengiriman digital melalui WhatsApp.</div>
+        <div class="field">
+          <label>Email penerima / akun terkait (jika diperlukan)</label>
+          <input name="digitalEmail" type="email" placeholder="email@example.com">
+        </div>
+        <div class="field">
+          <label>ID akun / username / server (jika diperlukan)</label>
+          <input name="accountId" maxlength="120" placeholder="Masukkan ID yang diminta produk">
+        </div>
+      </div>
+      <div class="field">
+        <label>Catatan tambahan (opsional)</label>
+        <textarea name="note" maxlength="200" placeholder="Catatan pesanan"></textarea>
+      </div>
+      <div class="field">
+        <label>Kode voucher (opsional)</label>
+        <div style="display:flex;gap:8px">
+          <input name="voucher" id="voucherInput" placeholder="Masukkan kode promo">
+          <button type="button" class="btn btn-light" onclick="applyVoucherPreview()">Pakai</button>
+        </div>
+        <small id="voucherMessage" style="color:var(--muted)"></small>
+      </div>
+      <div class="total"><span>Total sementara</span><span id="checkoutTotal">Rp0</span></div>
+      <button class="btn btn-primary" style="width:100%" type="submit"><i class="fa-brands fa-whatsapp"></i> Buat pesanan via WhatsApp</button>
+      <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:10px">Pesan akan dibuka di WhatsApp. Pesanan baru dikirim setelah kamu menekan tombol Kirim. Jangan pernah memberikan password akun kepada penjual.</p>
+    </form>
+  </div>
+</div>
+
+<div class="modal-wrap" id="adminModal" onclick="if(event.target===this)closeModal('adminModal')">
+  <div class="modal" style="width:900px">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-store"></i> Panel Admin</h3>
+      <button class="close" onclick="closeModal('adminModal')">×</button>
+    </div>
+    <div id="adminLogin" class="admin-login-clean">
+      <div class="admin-login-mark"><i class="fa-solid fa-lock"></i></div>
+      <h2>Selamat datang</h2>
+      <p>Masuk untuk mengelola Rona Market.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label>Password admin</label>
+          <input type="password" name="password" required autocomplete="current-password" placeholder="Masukkan password" aria-label="Password admin">
+        </div>
+        <button class="btn btn-primary" type="submit">Masuk</button>
+      </form>
+    </div>
+    <div id="adminDashboard" hidden>
+      <div class="stat-grid" id="adminStats"></div>
+      <div class="admin-tabs">
+        <button class="active" onclick="adminTab('products',this)">Produk</button>
+        <button onclick="adminTab('orders',this)">Pesanan</button>
+        <button onclick="adminTab('vouchers',this)">Voucher</button>
+        <button onclick="adminTab('analytics',this)">Statistik</button>
+        <button onclick="adminTab('appearance',this)">Tampilan toko</button>
+        <button onclick="adminTab('settings',this)">Keamanan</button>
+        <button onclick="adminLogout()" style="margin-left:auto;color:var(--red)">Keluar</button>
+      </div>
+      <div id="adminView"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="productFormModal" onclick="if(event.target===this)closeModal('productFormModal')">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="productFormTitle">Tambah produk</h3>
+      <button class="close" onclick="closeModal('productFormModal')">×</button>
+    </div>
+    <form id="productForm">
+      <input type="hidden" name="id">
+      <div class="field">
+        <label>Jenis produk</label>
+        <select name="type" id="productType" onchange="toggleProductFields()">
+          <option value="fisik">Produk fisik</option>
+          <option value="digital">Produk digital</option>
+        </select>
+      </div>
+      <div class="field"><label>Nama produk</label><input name="name" required maxlength="90"></div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Kategori</label>
+          <select name="category">
+            <option value="fashion">Fashion</option>
+            <option value="elektronik">Elektronik</option>
+            <option value="aksesoris">Aksesoris</option>
+            <option value="voucher">Voucher & Top Up</option>
+            <option value="akun">Lisensi & Akun</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="field"><label>Stok / kuota tersedia</label><input name="stock" type="number" min="0" step="1" required></div>
+        <div class="field"><label>Harga (Rp)</label><input name="price" type="number" min="0" required></div>
+        <div class="field"><label>Harga sebelum diskon (Rp)</label><input name="oldPrice" type="number" min="0" required></div>
+      </div>
+      <div class="field"><label>URL gambar</label><input name="image" type="url" required placeholder="https://..."></div>
+      <div class="field"><label>Deskripsi produk</label><textarea name="description" maxlength="600" placeholder="Jelaskan detail produk..."></textarea></div>
+      <div class="field"><label>Petunjuk data yang perlu diminta saat checkout (khusus digital)</label><input name="digitalRequirement" maxlength="180" placeholder="Contoh: User ID dan server ID"></div>
+      <button class="btn btn-primary">Simpan produk</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/features.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/guards.js"></script>
+<script src="js/cart-close.js"></script>
+</body>
+</html>
