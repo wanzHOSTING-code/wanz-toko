@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="topbar" id="announcement">✨ Pilihan menarik setiap hari · Belanja nyaman di Rona Market</div>
@@ -96,9 +96,12 @@
     </div>
     <div>
       <strong>Informasi</strong>
-      <p>Tentang kami</p>
-      <p>Hubungi kami</p>
-      <p>Kebijakan privasi</p>
+      <p onclick="openPolicyPage('about')" style="cursor:pointer">Tentang kami</p>
+      <p onclick="openPolicyPage('contact')" style="cursor:pointer">Hubungi kami</p>
+      <p onclick="openPolicyPage('privacy')" style="cursor:pointer">Kebijakan privasi</p>
+      <p onclick="openPolicyPage('return')" style="cursor:pointer">Kebijakan retur</p>
+      <p onclick="openPolicyPage('terms')" style="cursor:pointer">Syarat & ketentuan</p>
+      <p onclick="openFAQ()" style="cursor:pointer">FAQ</p>
     </div>
     <div>
       <strong>Temukan kami</strong>
@@ -308,11 +311,64 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-<script src="js/features.js"></script>
-<script src="js/pages.js"></script>
-<script src="js/guards.js"></script>
-<script src="js/cart-close.js"></script>
+<!-- Modal Pesanan Berhasil -->
+<div class="modal-wrap" id="successModal" onclick="if(event.target===this)closeModal('successModal')">
+  <div class="modal" style="width:520px">
+    <div style="text-align:center;padding:6px 0 14px">
+      <div style="width:62px;height:62px;border-radius:50%;background:#e8f8ef;color:#16824e;display:grid;place-items:center;margin:0 auto 12px;font-size:28px">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 style="font-size:20px;margin-bottom:6px">Pesanan berhasil dibuat!</h3>
+      <p style="font-size:12px;color:var(--muted)">Simpan nomor pesanan di bawah ini.</p>
+    </div>
+    <div style="background:#f4f7fc;border-radius:10px;padding:14px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+        <span>Nomor pesanan</span><span>Total</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-weight:800">
+        <span id="successOrderId" style="color:var(--blue)">—</span>
+        <span id="successTotal" style="color:var(--blue)">Rp0</span>
+      </div>
+    </div>
+    <div class="notice" style="background:#eaf3ff;border-color:#c9dffb;color:#274b7c;margin-bottom:14px">
+      <b><i class="fa-solid fa-wallet"></i> Instruksi pembayaran</b><br>
+      Silakan transfer ke <b>DANA</b> berikut:
+      <div style="background:#fff;border:1px dashed #9bbfe8;border-radius:8px;padding:10px;margin-top:8px;text-align:center">
+        <div style="font-size:10px;color:var(--muted)">Nomor DANA</div>
+        <div style="font-size:18px;font-weight:800;color:var(--blue);letter-spacing:.5px" id="danaNumber">0812-3456-7890</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px" id="danaName">a.n. Nama Pemilik Toko</div>
+        <button type="button" class="btn btn-light" style="margin-top:8px;font-size:10px;padding:6px 10px" onclick="copyDanaNumber()">
+          <i class="fa-regular fa-copy"></i> Salin nomor
+        </button>
+      </div>
+      <div style="font-size:11px;margin-top:10px;line-height:1.7">
+        Transfer <b>sesuai total</b>, lalu <b>screenshot bukti transfer</b>.<br>
+        Setelah itu klik tombol WhatsApp di bawah untuk mengirim format pesanan + bukti transfer.
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;background:#25d366" onclick="sendOrderToWhatsApp()">
+      <i class="fa-brands fa-whatsapp"></i> Kirim ke WhatsApp + Bukti TF
+    </button>
+    <button class="btn btn-light" style="width:100%;margin-top:8px" onclick="closeModal('successModal')">
+      Nanti saja
+    </button>
+    <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:10px;text-align:center">
+      Pesanan diproses setelah admin menerima bukti transfer.
+    </p>
+  </div>
+</div>
+
+<!-- Halaman statis Kebijakan -->
+<div class="modal-wrap page-mode" id="policyModal" onclick="if(event.target===this)closePolicyPage()">
+  <div class="modal" style="width:min(760px,100%)">
+    <div class="modal-head">
+      <h3 id="policyTitle">Informasi</h3>
+      <button class="close" onclick="closePolicyPage()">×</button>
+    </div>
+    <div id="policyBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
